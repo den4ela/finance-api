@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Employee\EmployeeController;
+use App\Http\Controllers\Api\Company\ExpenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,5 +25,16 @@ Route::group([
         'prefix' => 'salary',
     ], function () {
         Route::get('/{employee_id}', [EmployeeController::class, 'getEmployeeSalary']);
+    });
+});
+
+Route::group([
+    'prefix' => 'company',
+    'namespace' => 'Company',
+], function () {
+    Route::group([
+        'prefix' => 'expense',
+    ], function () {
+        Route::get('/', [ExpenseController::class, 'getExpenseByPeriod']);
     });
 });
