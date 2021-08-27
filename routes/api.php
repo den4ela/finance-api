@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Employee\EmployeeController;
-use App\Http\Controllers\Api\Company\ExpenseController;
+use App\Http\Controllers\Api\Company\{ExpenseController, ProfitController};
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +36,11 @@ Route::group([
         'prefix' => 'expense',
     ], function () {
         Route::get('/', [ExpenseController::class, 'getExpenseByPeriod']);
+    });
+    Route::group([
+        'prefix' => 'profit',
+    ], function () {
+        Route::get('/income', [ProfitController::class, 'getIncome']);
+        Route::get('/profit', [ProfitController::class, 'getProfit']);
     });
 });
