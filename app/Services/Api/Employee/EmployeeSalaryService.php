@@ -4,10 +4,11 @@ namespace App\Services\Api\Employee;
 
 use App\Models\Expense;
 use Carbon\Carbon;
+use \Illuminate\Http\JsonResponse;
 
 class EmployeeSalaryService
 {
-    public function getSalary(int $employee_id) : array
+    public function getSalary(int $employee_id) : JsonResponse
     {
         $response = [
             'status' => 'error'
@@ -27,6 +28,6 @@ class EmployeeSalaryService
             ];
         }
 
-        return $response;
+        return response()->json($response);
     }
 }
