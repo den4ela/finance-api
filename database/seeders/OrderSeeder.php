@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
+use App\Models\{User, Expense};
 use \Carbon\Carbon;
 
 class OrderSeeder extends Seeder
@@ -31,13 +31,26 @@ class OrderSeeder extends Seeder
     {
         for ($i = 0; $i < mt_rand(1, 5); $i++) {
             $timestamp = $this->random_timestamps[array_rand($this->random_timestamps, 1)];
-            \DB::table('orders')->insert([
+            $amount = mt_rand(1, 1000) / 10;
+
+            $insert_id = \DB::table('orders')->insertGetId([
                 'client_id' => $client_id,
                 'employee_id' => $employee_id,
-                'amount' => mt_rand(1, 1000) / 10,
+                'amount' => $amount,
                 'created_at' => $timestamp,
                 'updated_at' => $timestamp
             ]);
+
+            if ($insert_id) {
+                Expense::create([
+                    'employee_id' => $employee_id,
+                    'amount' => $amount * 0.03,
+                    'details' => [
+                        'type' => 'percentage_of_sale',
+                        'description' => 'Процент от заказа №'.$insert_id
+                    ]
+                ]);
+            }
         }
     }
 
