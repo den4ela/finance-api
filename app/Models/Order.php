@@ -23,7 +23,7 @@ class Order extends Model
      */
     public function employee()
     {
-        return $this->hasOne(User::class, 'client_id', 'id');
+        return $this->hasOne(User::class, 'employee_id', 'id');
     }
 
     /**
