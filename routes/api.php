@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Employee\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/{id}', 'MetaController@index')->name('index');
+
+Route::group([
+    'prefix' => 'employee',
+    'namespace' => 'Employee',
+], function () {
+    Route::group([
+        'prefix' => 'salary',
+    ], function () {
+        Route::get('/{employee_id}', [EmployeeController::class, 'getEmployeeSalary']);
+    });
 });
