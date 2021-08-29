@@ -76,19 +76,12 @@ class OrderSeeder extends Seeder
             ->get();
 
 
-        $index = 0;
-        foreach ($employees as $employee) {
-            if ($index === 0) {
-                foreach ($first_31_clients as $client) {
-                    $this->createRandomOrder($client->id, $employee->id);
-                }
-            }
-            else {
-                foreach ($other_clients as $client) {
-                    $this->createRandomOrder($client->id, $employee->id);
-                }
-            }
-            $index++;
+        foreach ($first_31_clients as $client) {
+            $this->createRandomOrder($client->id, $employees->first()->id);
+        }
+
+        foreach ($other_clients as $client) {
+            $this->createRandomOrder($client->id, $employees->random()->id);
         }
     }
 }

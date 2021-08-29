@@ -10,7 +10,7 @@ class ExpenseSeeder extends Seeder
 {
     /**
      * Данный сидер эмулирует CRON задачу рассчета ЗП за текущий месяц.
-     * ВАЖНО! Это всего ли демонстрация работы как CRON задачи.
+     * ВАЖНО! Это всего ли демонстрация работы как CRON задачи, которая должна запускатся в конце каждого месяца.
      */
 
     /**
@@ -44,7 +44,7 @@ class ExpenseSeeder extends Seeder
 
         if ($best_month_employee) {
             Expense::create([
-                'employee_id' => $best_month_employee->id,
+                'employee_id' => $best_month_employee->employee_id,
                 'amount' => 200,
                 'details' => [
                     'type' => 'best_month_employee',
@@ -55,11 +55,33 @@ class ExpenseSeeder extends Seeder
 
         // Сотрудники с клиентской базой превышающей 30 постоянных клиентов
         // Этот блок необходимо вынести в отдельную CRON задачу, которая бы запускалась каждый квартал.
-//        $quarterly_bonus_users = Order::selectRaw('employee_id, COUNT(client_id) as count_clients')
-//            ->where('updated_at', '>=', Carbon::now()->subMonths(3))
-//            ->groupBy('employee_id')
-//            ->orderBy('sum', 'DESC')
-//            ->first();
 
+//        $employee_ids = Order::select('employee_id')
+//            ->where('updated_at', '>=', Carbon::now()->subMonths(3))
+//            ->havingRaw('COUNT(DISTINCT(client_id)) as >= 30')
+//            ->get();
+//
+//        if ($employee_ids->count() > 0) {
+//            foreach ($employee_ids as $employee_id) {
+//                $client_ids = Order::selectRaw('DISTINCT(client_id) as client_id')
+//                    ->where('updated_at', '>=', Carbon::now()->subMonths(3))
+//                    ->where('employee_id', $employee_id->employee_id)
+//                    ->get();
+//
+//                if ($client_ids->count() > 0) {
+//                    $i = 0;
+//                    foreach ($client_ids as $client_id) {
+//                        $count = Order::where('employee_id', $employee_id->employee_id)
+//                            ->where('client_id', $client_id->client_id)
+//                            ->count();
+//                        if ($count > 0)
+//                            $i++;
+//                    }
+//                    if (!$i >= 30) {
+//                        $employee_ids->forget($employee_id->employee_id);
+//                    }
+//                }
+//            }
+//        }
     }
 }

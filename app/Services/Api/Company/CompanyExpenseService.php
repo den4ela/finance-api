@@ -16,17 +16,25 @@ class CompanyExpenseService
     public function getExpenseByPeriod(Request $request) : JsonResponse
     {
         $response = [
-            'status' => 'error'
+            'status' => 'error',
+            'message' => 'Ошибка обработки запроса. Обратитесь в поддержку.'
         ];
 
         if ($request->has('from') && $request->has('to')) {
             $expense = Expense::selectRaw('SUM(amount) as expense')
-                ->where('updated_at', '>=', Carbon::createFromDate($request->input('from'))->toDateTimeString())
-                ->where('updated_at', '<=', Carbon::createFromDate($request->input('to'))->toDateTimeString())
+                ->whereBetween('updated_at', [
+                    Carbon::createFromDate($request->input('from'))->toDateTimeString(),
+                    Carbon::createFromDate($request->input('to'))->toDateTimeString()
+                ])
                 ->first();
 
             if ($expense)
-                $response['body']['expense'] = $expense->expense;
+                $response = [
+                    'status' => 'ok',
+                    'body' => [
+                        'expense' => $expense->expense
+                    ]
+                ];
         }
         else {
             $response['body']['message'] = 'Один из параметров из обязательных параметров ({from}, {to}) не был указан в запросе';
