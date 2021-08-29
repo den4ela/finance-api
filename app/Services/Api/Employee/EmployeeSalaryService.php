@@ -2,22 +2,28 @@
 
 namespace App\Services\Api\Employee;
 
-use App\Models\Expense;
-use Carbon\Carbon;
 use \Illuminate\Http\JsonResponse;
+use App\Traits\Api\EmployeeSalaryTrait;
 
+/**
+ * Class EmployeeSalaryService
+ * @package App\Services\Api\Employee
+ */
 class EmployeeSalaryService
 {
+    use EmployeeSalaryTrait;
+
+    /**
+     * @param int $employee_id
+     * @return JsonResponse
+     */
     public function getSalary(int $employee_id) : JsonResponse
     {
         $response = [
             'status' => 'error'
         ];
 
-        $employee_salary = Expense::selectRaw('employee_id, SUM(amount) as salary')
-            ->where('updated_at', '>=', Carbon::now()->startOfMonth())
-            ->where('employee_id', $employee_id)
-            ->first();
+        $employee_salary = $this->getEmployeeSalary($employee_id);
 
         if ($employee_salary) {
             $response = [
