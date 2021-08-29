@@ -6,10 +6,18 @@ use Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use App\Traits\Api\ProfitTrait;
 
+/**
+ * Class IncomeService
+ * @package App\Services\Api\Company
+ */
 class IncomeService
 {
     use ProfitTrait;
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getIncomeAmount(Request $request) : JsonResponse
     {
         $response = [

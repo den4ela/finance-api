@@ -7,6 +7,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 
+/**
+ * Class CompanyExpenseService
+ * @package App\Services\Api\Company
+ */
 class CompanyExpenseService
 {
     /**
