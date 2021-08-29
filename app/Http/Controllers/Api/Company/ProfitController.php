@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Services\Api\Company\{IncomeService, ProfitService};
 use Illuminate\Http\Request;
 
+/**
+ * Class ProfitController
+ * @package App\Http\Controllers\Api\Company
+ */
 class ProfitController extends Controller
 {
     /**
